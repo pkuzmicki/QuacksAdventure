@@ -7,14 +7,12 @@ import java.net.URL;
 
 public class Sound {
     Clip clip;
-    URL soundURL[] = new URL[10];
+    URL[] soundURL = new URL[10];
 
     public Sound() {
-        soundURL[0] = getClass().getResource("/sound/soundtrack.wav");
-        soundURL[1] = getClass().getResource("/sound/demonz_duck.wav");
-        soundURL[2] = getClass().getResource("/sound/collect.wav");
-        soundURL[3] = getClass().getResource("/sound/chest_open.wav");
-        soundURL[4] = getClass().getResource("/sound/door_open.wav");
+        soundURL[0] = getClass().getResource("/sound/music01.wav");
+        soundURL[1] = getClass().getResource("/sound/music02.wav");
+
     }
 
     public void setFile(int i){

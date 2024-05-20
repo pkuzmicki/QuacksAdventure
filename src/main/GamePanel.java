@@ -41,9 +41,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     //GAME STATE
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
+
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -56,9 +58,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         assetSetter.setObject();
         assetSetter.setNPC();
-        //playMusic(0);
+        //playMusic(1);
         //stopMusic();
-        gameState = playState;
+        gameState = titleState;
     }
 
     public void startGameThread(){
@@ -142,28 +144,39 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyHandler.checkDrawTime) {
             drawStart = System.nanoTime();
         }
-        //DRAWING TILE
-        tileManager.draw(g2);
 
-        //DRAWING OBJECT
-        for (int i = 0; i < object.length; i++){
-            if (object[i] != null) {
-                object[i].draw(g2, this);
+        //TITLE SCREEN
+        if (gameState == titleState){
+            ui.draw(g2);
+        }
+        //OTHERS
+        else{
+            //DRAWING TILE
+            tileManager.draw(g2);
+
+            //DRAWING OBJECT
+            for (int i = 0; i < object.length; i++){
+                if (object[i] != null) {
+                    object[i].draw(g2, this);
+                }
             }
+
+            //NPC
+            for (int i = 0; i < npc.length; i++){
+                if (npc[i] != null){
+                    npc[i].draw(g2);
+                }
+            }
+
+            //DRAWING PLAYER
+            player.draw(g2);
+
+            //DRAWING UI
+            ui.draw(g2);
         }
 
-        //NPC
-        for (int i = 0; i < npc.length; i++){
-            if (npc[i] != null){
-                npc[i].draw(g2);
-            }
-        }
 
-        //DRAWING PLAYER
-        player.draw(g2);
-
-        //DRAWING UI
-        ui.draw(g2);
+        //DEBUG
 
         if (keyHandler.checkDrawTime) {
             long drawEnd = System.nanoTime();
