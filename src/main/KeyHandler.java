@@ -7,6 +7,7 @@ public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
     public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
+
     //DEBUG
     boolean checkDrawTime = false;
 
@@ -64,6 +65,7 @@ public class KeyHandler implements KeyListener {
                     }
                     if (code == KeyEvent.VK_DOWN){
                         gamePanel.ui.commandNum++;
+                        gamePanel.ui.charactersSelectNum = 1;
                         if (gamePanel.ui.commandNum > 1){
                             gamePanel.ui.commandNum = 0;
                         }
@@ -91,7 +93,7 @@ public class KeyHandler implements KeyListener {
                         if (gamePanel.ui.charactersSelectNum == 1) {
                             //select character 2
                             gamePanel.gameState = gamePanel.playState;
-                            gamePanel.playMusic(1);
+                            //gamePanel.playMusic(1);
                         }
                         if (gamePanel.ui.charactersSelectNum == 2) {
                             //select character 3

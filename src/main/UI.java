@@ -1,6 +1,11 @@
 package main;
 
+import object.OBJ_Heart;
+import object.OBJ_Poop;
+import object.SuperObject;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -8,7 +13,7 @@ public class UI {
     GamePanel gamePanel;
     Graphics2D g2;
     Font default_font;
-    //  BufferedImage keyImage;
+    BufferedImage heart_full, heart_half, heart_blank;
     public boolean messageOn = false;
     public String message = "";
     int messageCounter = 0;
@@ -33,8 +38,12 @@ public class UI {
             throw new RuntimeException(e);
         }
 
-//        OBJ_Key key = new OBJ_Key(gamePanel);
-//        keyImage = key.image;
+        //CREATE HUD OBJECT
+        SuperObject heart = new OBJ_Heart(gamePanel);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
+
     }
 
     public void showMessage(String text) {
@@ -56,18 +65,50 @@ public class UI {
 
         //PLAY STATE
         if  (gamePanel.gameState == gamePanel.playState){
-
+            drawPlayerLife();
         }
 
         //PAUSE STATE
         if (gamePanel.gameState == gamePanel.pauseState){
             drawPauseScreen();
+            drawPlayerLife();
         }
 
         //DIALOGUE STATE
         if (gamePanel.gameState == gamePanel.dialogueState){
             drawDialogueScreen();
+            drawPlayerLife();
         }
+    }
+
+    public void drawPlayerLife(){
+        int x = gamePanel.tileSize/2;
+        int y = gamePanel.tileSize/2;
+        int i = 0;
+
+        //DRAW MAX LIFE
+        while (i < gamePanel.player.maxLife / 2){
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += gamePanel.tileSize + gamePanel.tileSize / 8;
+        }
+
+        //RESET
+        x = gamePanel.tileSize/2;
+        y = gamePanel.tileSize/2;
+        i = 0;
+
+        //DRAW CURRENT LIFE
+        while (i < gamePanel.player.life){
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if (i < gamePanel.player.life){
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += gamePanel.tileSize + gamePanel.tileSize / 8;
+        }
+
     }
 
     public void drawTitleScreen(){

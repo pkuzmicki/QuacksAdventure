@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     int FPS = 60;
 
+    //SYSTEM
     TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
     Thread gameThread;
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     public UI ui = new UI(this);
+    public EventHandler eventHandler = new EventHandler(this);
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyHandler);
@@ -58,8 +60,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         assetSetter.setObject();
         assetSetter.setNPC();
-        //playMusic(1);
-        //stopMusic();
         gameState = titleState;
     }
 
@@ -116,6 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
 //            } catch (InterruptedException e) {
 //                throw new RuntimeException(e);
 //            }
+
         }
     }
     public void update(){
