@@ -11,6 +11,13 @@ public class NPC_Silly_Little_Goose extends Entity {
         direction = "down";
         speed = 1;
 
+        solidArea.x = 12;
+        solidArea.y = 20;
+        solidArea.width = 40;
+        solidArea.height = 40;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
         getImage();
         setDialogue();
     }

@@ -8,12 +8,10 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("EpicAdventureOfDuckNamedQuacks");
-//        ImageIcon icon = new ImageIcon("/player/ducker_left_1.png");
-//        window.setIconImage(icon.getImage());
-
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
+        window.setIconImage(gamePanel.player.left1);
 
         window.pack();
 

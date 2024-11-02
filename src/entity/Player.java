@@ -12,6 +12,9 @@ public class Player extends Entity {
     public /*final*/ int screenX;
     public /*final*/ int screenY;
 
+    public boolean invincible = false;
+    int invincibleCounter = 0;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel);
         this.keyHandler = keyHandler;
@@ -19,7 +22,7 @@ public class Player extends Entity {
         screenX = gamePanel.screenWidth /2 - (gamePanel.tileSize/2);
         screenY = gamePanel.screenHeight /2 - (gamePanel.tileSize/2);
 
-        solidArea = new Rectangle(12, 36, 36, 24);
+        solidArea = new Rectangle(14, 36, 34, 24);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         setDefaultValues();
@@ -82,6 +85,11 @@ public class Player extends Entity {
             int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
             interactNPC(npcIndex);
 
+            //CHECK MONSTER COLLISION
+            int monsterIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.monster);
+            interactMonster(monsterIndex);
+
+
             //CHECK EVENT
             gamePanel.eventHandler.checkEvent();
 
@@ -122,6 +130,14 @@ public class Player extends Entity {
             }
         }
 
+        if (invincible){
+            invincibleCounter++;
+            if (invincibleCounter > 60) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
     }
 
     public void pickUpObject(int i){
@@ -136,6 +152,15 @@ public class Player extends Entity {
             if (gamePanel.keyHandler.ePressed){
                 gamePanel.gameState = gamePanel.dialogueState;
                 gamePanel.npc[i].speak();
+            }
+        }
+    }
+
+    public void interactMonster(int i){
+        if (i != 999){
+            if (invincible == false){
+                life -= 1;
+                invincible = true;
             }
         }
     }
@@ -191,7 +216,18 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(image, screenX, screenY,null);
+        //g2.drawImage(image, screenX, screenY,null);
+
+        //DEBUG
+//        g2.setFont(new Font("Comic Sans", Font.BOLD, 30));
+//        g2.setColor(Color.WHITE);
+//        g2.drawString("Invincible:" + invincibleCounter, 10, 150);
+
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+        g2.drawImage(image, screenX, screenY, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }
 

@@ -56,6 +56,7 @@ public class TileManager {
         setup(27, "water_top_right_out", true);
         setup(28, "bush", true);
         setup(29, "wood", false);
+        setup(30, "wall", true);
     }
 
     public void setup(int index, String imageName, boolean collision) {

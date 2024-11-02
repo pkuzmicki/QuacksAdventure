@@ -7,9 +7,11 @@ public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
     public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
+    public int direction = 0;
 
     //DEBUG
     boolean checkDrawTime = false;
+    boolean showHitbox = false;
 
     public KeyHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
@@ -114,18 +116,39 @@ public class KeyHandler implements KeyListener {
 
         //PLAY STATE
         if (gamePanel.gameState == gamePanel.playState){
-            if (code == KeyEvent.VK_W){
-                upPressed = true;
+
+            switch (code){
+                case KeyEvent.VK_W:
+                    upPressed = true;
+                    direction = 1;
+                    break;
+                case KeyEvent.VK_S:
+                    downPressed = true;
+                    direction = 0;
+                    break;
+                case KeyEvent.VK_A:
+                    leftPressed = true;
+                    direction = 2;
+                    break;
+                case KeyEvent.VK_D:
+                    rightPressed = true;
+                    direction = 3;
+                    break;
             }
-            if (code == KeyEvent.VK_S){
-                downPressed = true;
-            }
-            if (code == KeyEvent.VK_A){
-                leftPressed = true;
-            }
-            if (code == KeyEvent.VK_D){
-                rightPressed = true;
-            }
+
+//            if (code == KeyEvent.VK_W){
+//                upPressed = true;
+//            }
+//            if (code == KeyEvent.VK_S){
+//                downPressed = true;
+//            }
+//            if (code == KeyEvent.VK_A){
+//                leftPressed = true;
+//            }
+//            if (code == KeyEvent.VK_D){
+//                rightPressed = true;
+//            }
+
             if (code == KeyEvent.VK_ESCAPE){
                 gamePanel.gameState = gamePanel.pauseState;
             }
@@ -154,6 +177,14 @@ public class KeyHandler implements KeyListener {
                 checkDrawTime = true;
             } else if (checkDrawTime) {
                 checkDrawTime = false;
+            }
+        }
+
+        if (code == KeyEvent.VK_P){
+            if (!showHitbox){
+                showHitbox = true;
+            } else if (showHitbox) {
+                showHitbox = false;
             }
         }
     }

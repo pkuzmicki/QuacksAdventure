@@ -2,11 +2,11 @@ package main;
 
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 
 public class GamePanel extends JPanel implements Runnable {
     //SCREEN SETTINGS
@@ -38,8 +38,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyHandler);
-    public SuperObject[] object = new SuperObject[10];
+    public Entity[] object = new Entity[10];
     public Entity[] npc = new Entity[10];
+    public Entity[] monster = new Entity[40];
+    ArrayList<Entity> entityList = new ArrayList<>();
+
+    //DEBUG
+    Hitbox hitbox = new Hitbox(this);
 
     //GAME STATE
     public int gameState;
@@ -60,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         assetSetter.setObject();
         assetSetter.setNPC();
+        assetSetter.setMonster();
         gameState = titleState;
     }
 
@@ -123,9 +129,15 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == playState){
             player.update();
 
-            for (int i = 0; i < npc.length; i++){
-                if (npc[i] != null){
-                    npc[i].update();
+            for (Entity entity : npc) {
+                if (entity != null) {
+                    entity.update();
+                }
+            }
+
+            for (Entity entity : monster) {
+                if (entity != null) {
+                    entity.update();
                 }
             }
         }
@@ -155,30 +167,55 @@ public class GamePanel extends JPanel implements Runnable {
             //DRAWING TILE
             tileManager.draw(g2);
 
-            //DRAWING OBJECT
-            for (int i = 0; i < object.length; i++){
-                if (object[i] != null) {
-                    object[i].draw(g2, this);
+            //ADDING ENTITIES TO LIST
+            entityList.add(player);
+
+            for (Entity npcs : npc) {
+                if (npcs != null) {
+                    entityList.add(npcs);
                 }
             }
 
-            //NPC
-            for (int i = 0; i < npc.length; i++){
-                if (npc[i] != null){
-                    npc[i].draw(g2);
+            for (Entity objects : object) {
+                if (objects != null) {
+                    entityList.add(objects);
                 }
             }
 
-            //DRAWING PLAYER
-            player.draw(g2);
+            for (Entity monsters : monster) {
+                if (monsters != null) {
+                    entityList.add(monsters);
+                }
+            }
+            
+            //SORT
+            entityList.sort(new Comparator<Entity>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    return Integer.compare(e1.worldY, e2.worldY);
+                }
+            });
+
+            //DRAW ENTITIES
+            for (Entity entity : entityList) {
+                entity.draw(g2);
+            }
+
+            //RESET ENTITY LIST
+            entityList.clear();
 
             //DRAWING UI
             ui.draw(g2);
+
+            //DRAW HITBOX
+            if (keyHandler.showHitbox){
+                hitbox.draw(g2);
+            }
+
         }
 
 
         //DEBUG
-
         if (keyHandler.checkDrawTime) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;

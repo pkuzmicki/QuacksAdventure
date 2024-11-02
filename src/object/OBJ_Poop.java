@@ -1,21 +1,21 @@
 package object;
 
+import entity.Entity;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
-public class OBJ_Poop extends SuperObject {
-    GamePanel gamePanel;
+public class OBJ_Poop extends Entity {
     public OBJ_Poop(GamePanel gamePanel){
-        this.gamePanel = gamePanel;
+        super(gamePanel);
         name = "Normal human shit";
-        try{
-            image = ImageIO.read(getClass().getResourceAsStream("/objects/poop.png"));
-            utilityTool.scaledImage(image, gamePanel.tileSize, gamePanel.tileSize);
+        down1 = setup("/objects/poop");
+        collision = true;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        solidArea.x = 10;
+        solidArea.y = 20;
+        solidArea.width = 42;
+        solidArea.height = 36;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
+
 }
